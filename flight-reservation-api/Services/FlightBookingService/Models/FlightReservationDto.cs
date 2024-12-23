@@ -1,3 +1,11 @@
-﻿namespace flight_reservation_api.Services.FlightBookingService.Models;
+﻿using flight_reservation_api.Services.FlightBookingService.Data;
 
-public record FlightReservationDto();
+namespace flight_reservation_api.Services.FlightBookingService.Models;
+
+public record FlightReservationDto(
+    Guid Id,
+    string FullName,
+    string FlightNumber,
+    DateTime DepartureDate,
+    DateTime ArrivalDate,
+    TicketType TicketType);
