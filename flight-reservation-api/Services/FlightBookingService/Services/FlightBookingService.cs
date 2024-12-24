@@ -7,69 +7,101 @@ namespace flight_reservation_api.Services.FlightBookingService.Services;
 
 public interface IFlightBookingService
 {
+    List<FlightReservationDto> GetAllFlightReservations();
+    FlightReservationDto? GetFlightReservationById(Guid id);
+    Task<FlightReservationDto> CreateFlightReservationAsync(CreateFlightReservationDto dto);
+    Task<FlightReservationDto?> UpdateFlightReservationAsync(UpdateFlightReservationDto dto);
+    Task DeleteFlightReservationAsync(Guid id);
+    Task ClearFlightReservationAsync();
 }
 
 public class FlightBookingService : IFlightBookingService
 {
-    private readonly string _databasePath = "./Data/flightReservations.json";
+    private const string DatabaseDir = "db";
+    private const string DatabasePath = "db/flightReservations.json";
+    private static List<FlightReservation> _flightReservations = LoadFlightReservations();
+
     private readonly FlightReservationMapper _flightReservationMapper;
-
-    private List<FlightReservation> _flightReservations;
-
 
     public FlightBookingService(FlightReservationMapper flightReservationMapper)
     {
         _flightReservationMapper = flightReservationMapper;
-        _flightReservations = LoadFlightReservations();
     }
 
     /// <summary>
-    /// Loading file with flight reservations
+    /// Pobranie danych o rezerwacji lotniczych z pliku
     /// </summary>
-    /// <returns>List of previous created reservations</returns>
-    private List<FlightReservation> LoadFlightReservations()
+    /// <returns>Rezerwacje lotnicze</returns>
+    private static List<FlightReservation> LoadFlightReservations()
     {
-        if (!File.Exists(_databasePath))
+        if (!File.Exists(DatabasePath))
         {
             return [];
         }
 
-        var jsonData = File.ReadAllText(_databasePath);
+        var jsonData = File.ReadAllText(DatabasePath);
         return JsonSerializer.Deserialize<List<FlightReservation>>(jsonData) ?? [];
     }
 
     /// <summary>
-    /// Update file of flight reservations
+    /// Aktualizacja pliku z rezerwacjami
     /// </summary>
-    private void SaveFlightReservations()
+    private async Task SaveFlightReservationsAsync()
     {
-        if (!File.Exists(_databasePath))
+        if (!Directory.Exists(DatabaseDir))
         {
-            File.Create(_databasePath);
+            Directory.CreateDirectory(DatabaseDir);
         }
 
         var jsonData = JsonSerializer.Serialize(_flightReservations);
-        File.WriteAllText(_databasePath, jsonData);
+        await File.WriteAllTextAsync(DatabasePath, jsonData);
     }
 
-    public List<FlightReservation> GetAllFlightReservations()
+    /// <summary>
+    /// Pobranie listy rezerwacji lotniczych
+    /// </summary>
+    /// <returns>Lista rezerwacji lotniczych</returns>
+    public List<FlightReservationDto> GetAllFlightReservations()
     {
-        return _flightReservations;
+        return _flightReservationMapper.ToFlightReservationDtos(_flightReservations);
     }
 
-    public FlightReservation? GetFlightReservationById(Guid id)
+    /// <summary>
+    /// Pobranie informacji o konkretnej rezerwacji
+    /// </summary>
+    /// <param name="id">Identyfikator rezerwacji</param>
+    /// <returns>Wyszukana rezerwacja lub null</returns>
+    public FlightReservationDto? GetFlightReservationById(Guid id)
     {
-        return _flightReservations.FirstOrDefault(reservation => reservation.Id == id);
+        var flightReservation = _flightReservations.FirstOrDefault(reservation => reservation.Id == id);
+
+        if (flightReservation is null)
+        {
+            return null;
+        }
+
+        return _flightReservationMapper.ToFlightReservationDto(flightReservation);
     }
 
-    public FlightReservationDto CreateFlightReservation(CreateFlightReservationDto dto)
+    /// <summary>
+    /// Tworzenie nowej rezerwacji
+    /// </summary>
+    /// <param name="dto">Dane potrzebne do utworzenia rezerwacji</param>
+    /// <returns>Utworzona rezerwacja</returns>
+    public async Task<FlightReservationDto> CreateFlightReservationAsync(CreateFlightReservationDto dto)
     {
         var newFlightReservation = _flightReservationMapper.ToFlightReservation(dto);
         _flightReservations.Add(newFlightReservation);
+        await SaveFlightReservationsAsync();
         return _flightReservationMapper.ToFlightReservationDto(newFlightReservation);
     }
 
-    public FlightReservationDto? UpdateFlightReservation(UpdateFlightReservationDto dto)
+    /// <summary>
+    /// Aktualizacja informacji o rezerwacji
+    /// </summary>
+    /// <param name="dto">Dane potrzebne do aktualizacji rezerwacji</param>
+    /// <returns>Zaktualizowany obiekt lub null</returns>
+    public async Task<FlightReservationDto?> UpdateFlightReservationAsync(UpdateFlightReservationDto dto)
     {
         var flightReservationIndex = _flightReservations
             .FindIndex(reservation => reservation.Id == dto.Id);
@@ -81,16 +113,27 @@ public class FlightBookingService : IFlightBookingService
 
         var updatedFlightReservation = _flightReservationMapper.ToFlightReservation(dto);
         _flightReservations[flightReservationIndex] = updatedFlightReservation;
+        await SaveFlightReservationsAsync();
+
         return _flightReservationMapper.ToFlightReservationDto(updatedFlightReservation);
     }
 
-    public void DeleteFlightReservation(Guid id)
+    /// <summary>
+    /// Usunięcie konkretnej rezerwacji
+    /// </summary>
+    /// <param name="id">Identyfikator rezerwacji</param>
+    public async Task DeleteFlightReservationAsync(Guid id)
     {
         _flightReservations = _flightReservations.Where(reservation => reservation.Id != id).ToList();
+        await SaveFlightReservationsAsync();
     }
 
-    public void ClearFlightReservation()
+    /// <summary>
+    /// Usunięcie rezerwacji
+    /// </summary>
+    public async Task ClearFlightReservationAsync()
     {
         _flightReservations = [];
+        await SaveFlightReservationsAsync();
     }
 }

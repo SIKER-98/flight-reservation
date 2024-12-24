@@ -1,6 +1,7 @@
 ﻿using flight_reservation_api.Services.FlightBookingService.Models;
 using flight_reservation_api.Services.FlightBookingService.Services;
 using FluentValidation;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 
 namespace flight_reservation_api.Controllers;
@@ -9,11 +10,11 @@ namespace flight_reservation_api.Controllers;
 [Route("api/flightReservation")]
 public class FlightReservationController : ControllerBase
 {
-    private readonly FlightBookingService _flightBookingService;
+    private readonly IFlightBookingService _flightBookingService;
     private readonly IValidator<CreateFlightReservationDto> _createFlightReservationDtoValidator;
     private readonly IValidator<UpdateFlightReservationDto> _updateFlightReservationDtoValidator;
 
-    public FlightReservationController(FlightBookingService flightBookingService,
+    public FlightReservationController(IFlightBookingService flightBookingService,
         IValidator<UpdateFlightReservationDto> updateFlightReservationDtoValidator,
         IValidator<CreateFlightReservationDto> createFlightReservationDtoValidator)
     {
@@ -21,7 +22,6 @@ public class FlightReservationController : ControllerBase
         _updateFlightReservationDtoValidator = updateFlightReservationDtoValidator;
         _createFlightReservationDtoValidator = createFlightReservationDtoValidator;
     }
-
 
     [HttpGet]
     [ProducesResponseType<List<FlightReservationDto>>(StatusCodes.Status200OK)]
@@ -47,48 +47,54 @@ public class FlightReservationController : ControllerBase
 
     [HttpPost]
     [ProducesResponseType<FlightReservationDto>(StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType<List<ValidationFailure>>(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateFlightReservationAsync(CreateFlightReservationDto dto)
     {
         var validationResult = await _createFlightReservationDtoValidator.ValidateAsync(dto);
         if (!validationResult.IsValid)
         {
-            return BadRequest();
+            return BadRequest(validationResult.Errors);
         }
 
-        var createResult = _flightBookingService.CreateFlightReservation(dto);
+        var createResult = await _flightBookingService.CreateFlightReservationAsync(dto);
         return Ok(createResult);
     }
 
     [HttpPut]
     [ProducesResponseType<FlightReservationDto>(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType<List<ValidationFailure>>(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> UpdateFlightReservation(UpdateFlightReservationDto dto)
+    public async Task<IActionResult> UpdateFlightReservationAsync(UpdateFlightReservationDto dto)
     {
         var validationResult = await _updateFlightReservationDtoValidator.ValidateAsync(dto);
         if (!validationResult.IsValid)
         {
-            return BadRequest();
+            return BadRequest(validationResult.Errors);
         }
 
-        _flightBookingService.UpdateFlightReservation(dto);
-        return Ok();
+        var updateResult = await _flightBookingService.UpdateFlightReservationAsync(dto);
+
+        if (updateResult is null)
+        {
+            return NotFound();
+        }
+
+        return Ok(updateResult);
     }
 
     [HttpDelete]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public IActionResult ClearFlightReservations()
+    public async Task<IActionResult> ClearFlightReservationsAsync()
     {
-        _flightBookingService.ClearFlightReservation();
+        await _flightBookingService.ClearFlightReservationAsync();
         return NoContent();
     }
 
     [HttpDelete("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public IActionResult DeleteFlightReservation(Guid id)
+    public async Task<IActionResult> DeleteFlightReservationAsync(Guid id)
     {
-        _flightBookingService.DeleteFlightReservation(id);
+        await _flightBookingService.DeleteFlightReservationAsync(id);
         return NoContent();
     }
 }

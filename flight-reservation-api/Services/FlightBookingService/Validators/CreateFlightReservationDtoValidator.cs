@@ -9,13 +9,16 @@ public class CreateFlightReservationDtoValidator : AbstractValidator<CreateFligh
     public CreateFlightReservationDtoValidator()
     {
         RuleFor(reservation => reservation.TicketType)
-            .IsInEnum();
+            .IsInEnum()
+            .WithMessage("Niepoprawny typ biletu");
 
         RuleFor(reservation => reservation.FlightNumber)
             .NotEmpty()
-            .Matches(new Regex("^[A-Z]{2,3}\\d{1,4}$"));
+            .Matches(new Regex("^[a-zA-Z]{2,3}\\d{1,4}$"))
+            .WithMessage("Niepoprawny numer lotu");
 
-        RuleFor(reservation => reservation.ArrivalDate)
-            .LessThan(reservation => reservation.DepartureDate);
+        RuleFor(reservation => reservation.DepartureDate)
+            .LessThan(reservation => reservation.ArrivalDate)
+            .WithMessage("Data przylotu nie może być wcześniej niż data wylotu");
     }
 }
