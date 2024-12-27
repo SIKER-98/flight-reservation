@@ -2,9 +2,6 @@
   width: 100%;
 }
 
-.dialog-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 12px;
+mat-form-field {
+  margin: 8px;
 }

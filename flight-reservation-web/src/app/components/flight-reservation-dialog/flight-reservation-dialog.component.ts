@@ -17,6 +17,7 @@ import {MatNativeDateModule, MatOption} from '@angular/material/core';
 import {MatSelect} from '@angular/material/select';
 import {TicketType} from '../../constants';
 import {Subscription} from 'rxjs';
+import {MatTimepicker, MatTimepickerInput, MatTimepickerToggle} from '@angular/material/timepicker';
 
 
 @Component({
@@ -35,6 +36,9 @@ import {Subscription} from 'rxjs';
     NgIf,
     MatSelect,
     MatOption,
+    MatTimepicker,
+    MatTimepickerToggle,
+    MatTimepickerInput,
   ],
   providers: [
     MatDatepickerModule,
@@ -70,12 +74,13 @@ export class FlightReservationDialogComponent implements OnDestroy {
               private dialogRef: MatDialogRef<FlightReservationDialogComponent>,
               private flightReservationService: FlightReservationService,
               private fb: FormBuilder) {
-    console.log(data)
     this.form = fb.group({
       fullName: [data?.fullName || '', [Validators.required]],
       flightNumber: [data?.flightNumber || '', [Validators.required]],
-      departureDate: [data?.departureDate || new Date(), [Validators.required]],
-      arrivalDate: [data?.arrivalDate || new Date(), [Validators.required]],
+      departureDate: [data?.departureDate ? new Date(data.departureDate).toISOString().split('T')[0] : '', [Validators.required]],
+      departureTime: [data?.departureDate ? new Date(data.departureDate).toISOString().split('T')[1].slice(0, 5) : '', [Validators.required]],
+      arrivalDate: [data?.arrivalDate ? new Date(data.arrivalDate).toISOString().split('T')[0] : '', [Validators.required]],
+      arrivalTime: [data?.arrivalDate ? new Date(data.arrivalDate).toISOString().split('T')[1].slice(0, 5) : '', [Validators.required]],
       ticketType: [data?.ticketType || 1, [Validators.required]],
     })
   }
@@ -88,19 +93,24 @@ export class FlightReservationDialogComponent implements OnDestroy {
     if (this.form.invalid) {
       return;
     }
-    if (this.data) {
-      this.flightReservationService.updateFlightReservation({
-        id: this.data.id,
-        ...this.form.value
-      } as UpdateFlightReservationModel)
-        .subscribe(() => this.dialogRef.close(true));
-      return
-    } else {
-      this.flightReservationService.createFlightReservation({
-        ...this.form.value
-      } as CreateFlightReservationModel)
-        .subscribe(() => this.dialogRef.close(true));
+
+    const payload = {
+      ...this.form.value,
+      departureDate: new Date(`${this.form.value.departureDate}T${this.form.value.departureTime}`),
+      arrivalDate: new Date(`${this.form.value.arrivalDate}T${this.form.value.arrivalTime}`),
     }
+    delete payload.departureTime;
+    delete payload.arrivalTime;
+
+    console.log(this.form.value)
+    const apiCall = this.data
+      ? this.flightReservationService.updateFlightReservation({
+        id: this.data.id,
+        ...payload
+      } as UpdateFlightReservationModel)
+      : this.flightReservationService.createFlightReservation(payload as CreateFlightReservationModel);
+
+    apiCall.subscribe(() => this.dialogRef.close(true));
   }
 
   close(): void {

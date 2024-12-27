@@ -1,38 +1,53 @@
 <h1 mat-dialog-title>{{ data ? 'Edit Flight Reservation' : 'Add Flight Reservation' }}</h1>
 <div mat-dialog-content>
   <form [formGroup]="form" class="dialog-container">
-    <mat-form-field>
+    <mat-form-field class="full-width">
       <mat-label>Full Name</mat-label>
       <input matInput class="full-width" formControlName="fullName">
       <mat-error *ngIf="form.get('fullName')?.errors">{{ getErrorMessage(form.get('fullName')?.errors) }}</mat-error>
     </mat-form-field>
 
-    <mat-form-field>
+    <mat-form-field class="full-width">
       <mat-label>Flight Number</mat-label>
-      <input matInput class="full-width" formControlName="flightNumber">
+      <input matInput formControlName="flightNumber">
       <mat-error *ngIf="form.get('flightNumber')?.errors">{{ getErrorMessage(form.get('flightNumber')?.errors) }}
       </mat-error>
     </mat-form-field>
 
-    <mat-form-field>
+    <mat-form-field class="full-width">
       <mat-label>Data wylotu</mat-label>
-      <input matInput type="datetime-local" formControlName="departureDate"/>
-      <mat-hint>MM/DD/YYYY</mat-hint>
+      <input matInput type="date" formControlName="departureDate">
       <mat-error *ngIf="form.get('departureDate')?.errors">
         {{ getErrorMessage(form.get('departureDate')?.errors) }}
       </mat-error>
     </mat-form-field>
 
-    <mat-form-field>
+    <mat-form-field class="full-width">
+      <mat-label>Godzina wylotu</mat-label>
+      <input matInput type="time" formControlName="departureTime">
+      <mat-error *ngIf="form.get('departureTime')?.errors">
+        {{ getErrorMessage(form.get('departureTime')?.errors) }}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
       <mat-label>Data przylotu</mat-label>
-      <input matInput type="datetime-local" formControlName="arrivalDate"/>
-      <mat-hint>MM/DD/YYYY</mat-hint>
+      <input matInput type="date" formControlName="arrivalDate">
       <mat-error *ngIf="form.get('arrivalDate')?.errors">
         {{ getErrorMessage(form.get('arrivalDate')?.errors) }}
       </mat-error>
     </mat-form-field>
 
-    <mat-form-field>
+    <mat-form-field class="full-width">
+      <mat-label>Godzina przylotu</mat-label>
+      <input matInput type="time" formControlName="arrivalTime">
+      <mat-error *ngIf="form.get('arrivalTime')?.errors">
+        {{ getErrorMessage(form.get('arrivalTime')?.errors) }}
+      </mat-error>
+    </mat-form-field>
+
+
+    <mat-form-field class="full-width">
       <mat-label>Ticket Type</mat-label>
       <mat-select formControlName="ticketType">
         <mat-option [value]="TicketType.Economic">Ekonomiczna</mat-option>
@@ -42,8 +57,7 @@
       </mat-error>
     </mat-form-field>
   </form>
-</div>
-<div mat-dialog-actions>
+
   <button mat-button (click)="close()">Anuluj</button>
   <button mat-raised-button color="primary" [disabled]="!form.valid" (click)="save()">{{ data ? 'Edytuj' : 'Dodaj' }}
   </button>
