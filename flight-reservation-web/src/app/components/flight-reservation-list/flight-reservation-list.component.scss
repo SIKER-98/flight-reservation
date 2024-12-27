@@ -1,0 +1,14 @@
+.container {
+  margin: 8px;
+
+  .toolbar {
+    display: flex;
+    gap: 8px;
+    flex-direction: column;
+    margin-top: 8px;
+  }
+
+  .full-width {
+    width: 100%;
+  }
+}

@@ -1,63 +1,69 @@
-<div class="toolbar">
-  <button mat-raised-button color="primary" (click)="openDialog()">Nowa rezerwacja</button>
-  <mat-form-field>
-    <mat-label>Filtruj</mat-label>
-    <input matInput/>
-  </mat-form-field>
+<div class="container">
+  <div class="toolbar">
+    <button mat-flat-button color="primary" (click)="openDialog()">Nowa rezerwacja</button>
+    <mat-form-field class="full-width">
+      <mat-label>Filtruj</mat-label>
+      <input matInput (keyup)="applyFilter($event)"/>
+    </mat-form-field>
+  </div>
+
+  <table mat-table [dataSource]="dataSource" matSort>
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>No.</th>
+      <td mat-cell *matCellDef="let element; let i = index">{{ i + 1 }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="fullName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Imię i Nazwisko</th>
+      <td mat-cell *matCellDef="let element">{{ element.fullName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="flightNumber">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Numer lotu</th>
+      <td mat-cell *matCellDef="let element">{{ element.flightNumber }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="departureDate">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Wylot</th>
+      <td mat-cell *matCellDef="let element">{{ element.departureDate | date : "dd-MM-YYYY hh:mm" }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="arrivalDate">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Przylot</th>
+      <td mat-cell *matCellDef="let element">{{ element.arrivalDate | date : "dd-MM-YYYY hh:mm" }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="ticketType">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Typ biletu</th>
+      <td mat-cell *matCellDef="let element">{{ element.ticketType | ticketType }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-icon-button color="accent" (click)="openDialog(element)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button
+                color="warn"
+                confirm
+                (confirmed)="deleteItem(element.id)"
+                dialogTitle="Usunięcie rezerwacji"
+                message="Czy na pewno chcesz usunąć rezerwacje?"
+                [isWarn]="true"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell" colspan="6">Brak danych pasujących do frazy: {{ dataSource.filter }}</td>
+    </tr>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]"></mat-paginator>
 </div>
-
-<table mat-table [dataSource]="dataSource" matSort>
-  <ng-container matColumnDef="id">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>No.</th>
-    <td mat-cell *matCellDef="let element; let i = index">{{ i + 1 }}</td>
-  </ng-container>
-
-  <ng-container matColumnDef="fullName">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>Imię i Nazwisko</th>
-    <td mat-cell *matCellDef="let element">{{ element.fullName }}</td>
-  </ng-container>
-
-  <ng-container matColumnDef="flightNumber">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>Numer lotu</th>
-    <td mat-cell *matCellDef="let element">{{ element.flightNumber }}</td>
-  </ng-container>
-
-  <ng-container matColumnDef="departureDate">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>Wylot</th>
-    <td mat-cell *matCellDef="let element">{{ element.departureDate | date : "dd-MM-YYYY hh:mm" }}</td>
-  </ng-container>
-
-  <ng-container matColumnDef="arrivalDate">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>Przylot</th>
-    <td mat-cell *matCellDef="let element">{{ element.arrivalDate | date : "dd-MM-YYYY hh:mm" }}</td>
-  </ng-container>
-
-  <ng-container matColumnDef="ticketType">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>Typ biletu</th>
-    <td mat-cell *matCellDef="let element">{{ element.ticketType | ticketType }}</td>
-  </ng-container>
-
-  <ng-container matColumnDef="actions">
-    <th mat-header-cell *matHeaderCellDef></th>
-    <td mat-cell *matCellDef="let element">
-      <button mat-icon-button color="accent" (click)="openDialog(element)">
-        <mat-icon>edit</mat-icon>
-      </button>
-      <button mat-icon-button
-              color="warn"
-              confirm
-              (confirmed)="deleteItem(element.id)"
-              dialogTitle="Usunięcie rezerwacji"
-              message="Czy na pewno chcesz usunąć rezerwacje?"
-              [isWarn]="true"
-      >
-        <mat-icon>delete</mat-icon>
-      </button>
-    </td>
-  </ng-container>
-
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-</table>
-
-<mat-paginator [pageSizeOptions]="[5, 10, 20]"></mat-paginator>
