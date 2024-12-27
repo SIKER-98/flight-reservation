@@ -18,6 +18,7 @@ import {MatSelect} from '@angular/material/select';
 import {TicketType} from '../../constants';
 import {Subscription} from 'rxjs';
 import {MatTimepicker, MatTimepickerInput, MatTimepickerToggle} from '@angular/material/timepicker';
+import {flightNumberValidator, noLeadingTrailingSpacesValidator} from '../../validators';
 
 
 @Component({
@@ -67,6 +68,10 @@ export class FlightReservationDialogComponent implements OnDestroy {
     {
       name: 'tooEarlyDate',
       message: 'Data przylotu musi być później niż data odlotu'
+    },
+    {
+      name: 'invalidFlightNumber',
+      message: 'Niepoprawny numer lotu'
     }
   ]
 
@@ -75,8 +80,8 @@ export class FlightReservationDialogComponent implements OnDestroy {
               private flightReservationService: FlightReservationService,
               private fb: FormBuilder) {
     this.form = fb.group({
-      fullName: [data?.fullName || '', [Validators.required]],
-      flightNumber: [data?.flightNumber || '', [Validators.required]],
+      fullName: [data?.fullName || '', [Validators.required, noLeadingTrailingSpacesValidator()]],
+      flightNumber: [data?.flightNumber || '', [Validators.required, flightNumberValidator(), noLeadingTrailingSpacesValidator()]],
       departureDate: [data?.departureDate ? new Date(data.departureDate).toISOString().split('T')[0] : '', [Validators.required]],
       departureTime: [data?.departureDate ? new Date(data.departureDate).toISOString().split('T')[1].slice(0, 5) : '', [Validators.required]],
       arrivalDate: [data?.arrivalDate ? new Date(data.arrivalDate).toISOString().split('T')[0] : '', [Validators.required]],

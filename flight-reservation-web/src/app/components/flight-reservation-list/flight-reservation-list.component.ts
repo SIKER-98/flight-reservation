@@ -21,6 +21,7 @@ import {DatePipe} from '@angular/common';
 import {MatFormField} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {ConfirmDirective} from '../../directives/confirm.directive';
+import {TicketTypePipe} from '../../pipes';
 
 
 @Component({
@@ -48,7 +49,8 @@ import {ConfirmDirective} from '../../directives/confirm.directive';
     MatCellDef,
     MatHeaderRowDef,
     MatRowDef,
-    ConfirmDirective
+    ConfirmDirective,
+    TicketTypePipe
   ]
 })
 export class FlightReservationListComponent implements OnInit, OnDestroy {
