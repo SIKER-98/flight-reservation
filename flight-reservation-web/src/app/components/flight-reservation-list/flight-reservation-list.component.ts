@@ -20,6 +20,7 @@ import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {DatePipe} from '@angular/common';
 import {MatFormField} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
+import {ConfirmDirective} from '../../directives/confirm.directive';
 
 
 @Component({
@@ -46,7 +47,8 @@ import {MatInputModule} from '@angular/material/input';
     MatHeaderCellDef,
     MatCellDef,
     MatHeaderRowDef,
-    MatRowDef
+    MatRowDef,
+    ConfirmDirective
   ]
 })
 export class FlightReservationListComponent implements OnInit, OnDestroy {

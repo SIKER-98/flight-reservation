@@ -43,7 +43,14 @@
       <button mat-icon-button color="accent" (click)="openDialog(element)">
         <mat-icon>edit</mat-icon>
       </button>
-      <button mat-icon-button color="warn" (click)="deleteItem(element.id)">
+      <button mat-icon-button
+              color="warn"
+              confirm
+              (confirmed)="deleteItem(element.id)"
+              dialogTitle="Usunięcie rezerwacji"
+              message="Czy na pewno chcesz usunąć rezerwacje?"
+              [isWarn]="true"
+      >
         <mat-icon>delete</mat-icon>
       </button>
     </td>
