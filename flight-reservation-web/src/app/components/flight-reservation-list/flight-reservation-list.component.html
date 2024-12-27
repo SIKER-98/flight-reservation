@@ -1,0 +1,56 @@
+<div class="toolbar">
+  <button mat-raised-button color="primary" (click)="openDialog()">Nowa rezerwacja</button>
+  <mat-form-field>
+    <mat-label>Filtruj</mat-label>
+    <input matInput/>
+  </mat-form-field>
+</div>
+
+<table mat-table [dataSource]="dataSource" matSort>
+  <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>No.</th>
+    <td mat-cell *matCellDef="let element; let i = index">{{ i + 1 }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="fullName">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Imię i Nazwisko</th>
+    <td mat-cell *matCellDef="let element">{{ element.fullName }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="flightNumber">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Numer lotu</th>
+    <td mat-cell *matCellDef="let element">{{ element.flightNumber }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="departureDate">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Wylot</th>
+    <td mat-cell *matCellDef="let element">{{ element.departureDate | date }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="arrivalDate">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Przylot</th>
+    <td mat-cell *matCellDef="let element">{{ element.arrivalDate | date }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="ticketType">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Typ biletu</th>
+    <td mat-cell *matCellDef="let element">{{ element.ticketType }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let element">
+      <button mat-icon-button color="accent" (click)="openDialog(element)">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button color="warn" (click)="deleteItem(element.id)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+
+<mat-paginator [pageSizeOptions]="[5, 10, 20]"></mat-paginator>

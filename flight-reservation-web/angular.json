@@ -63,6 +63,10 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "port": 8894,
+            "proxyConfig": "src/proxy.conf.json"
+          },
           "configurations": {
             "production": {
               "buildTarget": "flight-reservation-web:build:production"

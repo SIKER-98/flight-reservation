@@ -1,0 +1,50 @@
+<h1 mat-dialog-title>{{ data ? 'Edit Flight Reservation' : 'Add Flight Reservation' }}</h1>
+<div mat-dialog-content>
+  <form [formGroup]="form" class="dialog-container">
+    <mat-form-field>
+      <mat-label>Full Name</mat-label>
+      <input matInput class="full-width" formControlName="fullName">
+      <mat-error *ngIf="form.get('fullName')?.errors">{{ getErrorMessage(form.get('fullName')?.errors) }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Flight Number</mat-label>
+      <input matInput class="full-width" formControlName="flightNumber">
+      <mat-error *ngIf="form.get('flightNumber')?.errors">{{ getErrorMessage(form.get('flightNumber')?.errors) }}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Data wylotu</mat-label>
+      <input matInput type="datetime-local" formControlName="departureDate"/>
+      <mat-hint>MM/DD/YYYY</mat-hint>
+      <mat-error *ngIf="form.get('departureDate')?.errors">
+        {{ getErrorMessage(form.get('departureDate')?.errors) }}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Data przylotu</mat-label>
+      <input matInput type="datetime-local" formControlName="arrivalDate"/>
+      <mat-hint>MM/DD/YYYY</mat-hint>
+      <mat-error *ngIf="form.get('arrivalDate')?.errors">
+        {{ getErrorMessage(form.get('arrivalDate')?.errors) }}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Ticket Type</mat-label>
+      <mat-select formControlName="ticketType">
+        <mat-option [value]="TicketType.Economic">Ekonomiczna</mat-option>
+        <mat-option [value]="TicketType.Business">Biznesowa</mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.get('ticketType')?.errors">{{ getErrorMessage(form.get('ticketType')?.errors) }}
+      </mat-error>
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="close()">Anuluj</button>
+  <button mat-raised-button color="primary" [disabled]="!form.valid" (click)="save()">{{ data ? 'Edytuj' : 'Dodaj' }}
+  </button>
+</div>
