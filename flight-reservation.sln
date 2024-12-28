@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "flight-reservation-api", "flight-reservation-api\flight-reservation-api.csproj", "{3D396516-6560-46A0-8A97-130B54BF9453}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "flight-reservation-api.test", "flight-reservation-api.test\flight-reservation-api.test.csproj", "{0072FBCA-3976-457B-AF6F-C9A47F24594B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{3D396516-6560-46A0-8A97-130B54BF9453}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3D396516-6560-46A0-8A97-130B54BF9453}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3D396516-6560-46A0-8A97-130B54BF9453}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0072FBCA-3976-457B-AF6F-C9A47F24594B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0072FBCA-3976-457B-AF6F-C9A47F24594B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0072FBCA-3976-457B-AF6F-C9A47F24594B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0072FBCA-3976-457B-AF6F-C9A47F24594B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
