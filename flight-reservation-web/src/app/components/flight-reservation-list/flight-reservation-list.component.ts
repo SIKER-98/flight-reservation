@@ -13,15 +13,16 @@ import {
   MatTableDataSource
 } from '@angular/material/table';
 import {FlightReservationModel} from '../../models';
-import {MatButton, MatIconButton, MatMiniFabButton} from '@angular/material/button';
+import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
 import {FlightReservationDialogComponent} from '../flight-reservation-dialog/flight-reservation-dialog.component';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
-import {DatePipe} from '@angular/common';
+import {DatePipe, UpperCasePipe} from '@angular/common';
 import {MatFormField} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {ConfirmDirective} from '../../directives/confirm.directive';
 import {TicketTypePipe} from '../../pipes';
+import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
 
 
 @Component({
@@ -52,7 +53,10 @@ import {TicketTypePipe} from '../../pipes';
     MatHeaderCellDef,
     MatCellDef,
     MatNoDataRow,
-    MatMiniFabButton
+    MatMenuTrigger,
+    MatMenu,
+    MatMenuItem,
+    UpperCasePipe
   ]
 })
 export class FlightReservationListComponent implements OnInit, OnDestroy {
@@ -83,7 +87,7 @@ export class FlightReservationListComponent implements OnInit, OnDestroy {
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
       })
-    )
+    );
   }
 
   deleteItem(id: string): void {
@@ -91,13 +95,20 @@ export class FlightReservationListComponent implements OnInit, OnDestroy {
       this.flightReservationService.deleteFlightReservation(id).subscribe(() =>
         this.fetchFlightReservations()
       )
-    )
+    );
+  }
+
+  deleteAllItems(): void {
+    this.subscription.add(
+      this.flightReservationService.clearFlightReservations().subscribe(() =>
+        this.fetchFlightReservations()
+      )
+    );
   }
 
   openDialog(element: FlightReservationModel | null = null): void {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = element;
-    // dialogConfig.width = '400px';
     this.dialog.open<FlightReservationDialogComponent, FlightReservationModel | null, FlightReservationModel>(FlightReservationDialogComponent, dialogConfig)
       .afterClosed().subscribe(result => {
       console.log(result)
@@ -107,7 +118,7 @@ export class FlightReservationListComponent implements OnInit, OnDestroy {
     })
   }
 
-  applyFilter($event: Event) {
+  applyFilter($event: Event): void {
     const filterValue = ($event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }

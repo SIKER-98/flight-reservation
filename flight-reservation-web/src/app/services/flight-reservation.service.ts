@@ -8,7 +8,7 @@ import {Observable} from 'rxjs';
   providedIn: 'root'
 })
 export class FlightReservationService {
-  private apiUrl = 'https://localhost:44388/api/flightReservation';
+  private apiUrl = 'http://localhost:5059/api/flightReservation';
   private http = inject(HttpClient);
 
   getFlightReservations(): Observable<FlightReservationModel[]> {

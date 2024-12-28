@@ -17,7 +17,6 @@ import {MatNativeDateModule, MatOption} from '@angular/material/core';
 import {MatSelect} from '@angular/material/select';
 import {TicketType} from '../../constants';
 import {Subscription} from 'rxjs';
-import {MatTimepicker, MatTimepickerInput, MatTimepickerToggle} from '@angular/material/timepicker';
 import {flightNumberValidator, noLeadingTrailingSpacesValidator} from '../../validators';
 
 
@@ -37,9 +36,6 @@ import {flightNumberValidator, noLeadingTrailingSpacesValidator} from '../../val
     NgIf,
     MatSelect,
     MatOption,
-    MatTimepicker,
-    MatTimepickerToggle,
-    MatTimepickerInput,
   ],
   providers: [
     MatDatepickerModule,

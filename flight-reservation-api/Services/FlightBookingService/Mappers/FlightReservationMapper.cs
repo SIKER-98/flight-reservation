@@ -14,11 +14,6 @@ public partial class FlightReservationMapper
 
     internal partial FlightReservationDto ToFlightReservationDto(FlightReservation flightReservation);
 
-    internal partial FlightReservation ToFlightReservation(FlightReservationDto flightReservationDto);
-
     internal partial List<FlightReservationDto> ToFlightReservationDtos(
         IEnumerable<FlightReservation> flightReservations);
-
-    internal partial List<FlightReservation> ToFlightReservationsDtos(
-        IEnumerable<FlightReservationDto> flightReservationDtos);
 }
