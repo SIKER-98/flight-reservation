@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
+using AutoMapper;
 using flight_reservation_api.Services.FlightBookingService.Data;
-using flight_reservation_api.Services.FlightBookingService.Mappers;
 using flight_reservation_api.Services.FlightBookingService.Models;
 
 namespace flight_reservation_api.Services.FlightBookingService.Services;
@@ -21,9 +21,9 @@ public class FlightBookingService : IFlightBookingService
     private const string DatabasePath = "db/flightReservations.json";
     private static List<FlightReservation> _flightReservations = LoadFlightReservations();
 
-    private readonly FlightReservationMapper _flightReservationMapper;
+    private readonly IMapper _flightReservationMapper;
 
-    public FlightBookingService(FlightReservationMapper flightReservationMapper)
+    public FlightBookingService(IMapper flightReservationMapper)
     {
         _flightReservationMapper = flightReservationMapper;
     }
@@ -63,7 +63,7 @@ public class FlightBookingService : IFlightBookingService
     /// <returns>Lista rezerwacji lotniczych</returns>
     public List<FlightReservationDto> GetAllFlightReservations()
     {
-        return _flightReservationMapper.ToFlightReservationDtos(_flightReservations);
+        return _flightReservationMapper.Map<List<FlightReservationDto>>(_flightReservations);
     }
 
     /// <summary>
@@ -80,7 +80,7 @@ public class FlightBookingService : IFlightBookingService
             return null;
         }
 
-        return _flightReservationMapper.ToFlightReservationDto(flightReservation);
+        return _flightReservationMapper.Map<FlightReservationDto>(flightReservation);
     }
 
     /// <summary>
@@ -90,10 +90,10 @@ public class FlightBookingService : IFlightBookingService
     /// <returns>Utworzona rezerwacja</returns>
     public async Task<FlightReservationDto> CreateFlightReservationAsync(CreateFlightReservationDto dto)
     {
-        var newFlightReservation = _flightReservationMapper.ToFlightReservation(dto);
+        var newFlightReservation = _flightReservationMapper.Map<FlightReservation>(dto);
         _flightReservations.Add(newFlightReservation);
         await SaveFlightReservationsAsync();
-        return _flightReservationMapper.ToFlightReservationDto(newFlightReservation);
+        return _flightReservationMapper.Map<FlightReservationDto>(newFlightReservation);
     }
 
     /// <summary>
@@ -111,11 +111,11 @@ public class FlightBookingService : IFlightBookingService
             return null;
         }
 
-        var updatedFlightReservation = _flightReservationMapper.ToFlightReservation(dto);
+        var updatedFlightReservation = _flightReservationMapper.Map<FlightReservation>(dto);
         _flightReservations[flightReservationIndex] = updatedFlightReservation;
         await SaveFlightReservationsAsync();
 
-        return _flightReservationMapper.ToFlightReservationDto(updatedFlightReservation);
+        return _flightReservationMapper.Map<FlightReservationDto>(updatedFlightReservation);
     }
 
     /// <summary>

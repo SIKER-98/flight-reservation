@@ -9,7 +9,7 @@ public static class ServiceRegistrator
 {
     public static void AddFlightBookingService(this IServiceCollection services)
     {
-        services.AddSingleton<FlightReservationMapper>();
+        services.AddAutoMapper(typeof(FlightReservationMapper));
 
         services.AddScoped<IValidator<CreateFlightReservationDto>, CreateFlightReservationDtoValidator>();
         services.AddScoped<IValidator<UpdateFlightReservationDto>, UpdateFlightReservationDtoValidator>();
