@@ -110,7 +110,6 @@ export class FlightReservationListComponent implements OnInit, OnDestroy {
     dialogConfig.data = element;
     this.dialog.open<FlightReservationDialogComponent, FlightReservationModel | null, FlightReservationModel>(FlightReservationDialogComponent, dialogConfig)
       .afterClosed().subscribe(result => {
-      console.log(result)
       if (result) {
         this.fetchFlightReservations();
       }

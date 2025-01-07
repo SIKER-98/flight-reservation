@@ -106,7 +106,6 @@ export class FlightReservationDialogComponent implements OnDestroy {
     delete payload.departureTime;
     delete payload.arrivalTime;
 
-    console.log(this.form.value)
     const apiCall = this.data
       ? this.flightReservationService.updateFlightReservation({
         id: this.data.id,

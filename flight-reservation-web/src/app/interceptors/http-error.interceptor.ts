@@ -11,7 +11,6 @@ export class HttpErrorInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(
       catchError((err: HttpErrorResponse) => {
-        console.log(err)
         if (err.error[0].errorMessage) {
           // validation error
           this.snackbar.open(err.error[0].errorMessage)
