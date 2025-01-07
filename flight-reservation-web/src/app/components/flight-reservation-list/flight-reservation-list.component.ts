@@ -7,7 +7,8 @@ import {
   MatCell, MatCellDef,
   MatColumnDef,
   MatHeaderCell, MatHeaderCellDef,
-  MatHeaderRow, MatHeaderRowDef, MatNoDataRow,
+  MatHeaderRow, MatHeaderRowDef,
+  MatNoDataRow,
   MatRow, MatRowDef,
   MatTable,
   MatTableDataSource
@@ -47,15 +48,15 @@ import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
     MatInputModule,
     ConfirmDirective,
     TicketTypePipe,
-    MatHeaderRowDef,
-    MatRowDef,
-    MatHeaderCellDef,
-    MatCellDef,
     MatNoDataRow,
     MatMenuTrigger,
     MatMenu,
     MatMenuItem,
-    UpperCasePipe
+    UpperCasePipe,
+    MatHeaderCellDef,
+    MatCellDef,
+    MatHeaderRowDef,
+    MatRowDef
   ]
 })
 export class FlightReservationListComponent implements OnInit, OnDestroy {
@@ -73,6 +74,13 @@ export class FlightReservationListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.fetchFlightReservations()
+
+    this.dataSource.sortingDataAccessor = (data: any, sortHeaderId: string): string => {
+      if (typeof data[sortHeaderId] === 'string') {
+        return data[sortHeaderId].toLocaleUpperCase();
+      }
+      return data[sortHeaderId];
+    }
   }
 
   ngOnDestroy(): void {
