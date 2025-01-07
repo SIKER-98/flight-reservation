@@ -8,6 +8,11 @@ public class UpdateFlightReservationDtoValidator : AbstractValidator<UpdateFligh
 {
     public UpdateFlightReservationDtoValidator()
     {
+        RuleFor(reservation => reservation.FullName)
+            .NotEmpty()
+            .Matches(@"^\p{L}+(?:[-' ]\p{L}+)*\s+\p{L}+(?:[-' ]\p{L}+)*(?:\s+\p{L}+(?:[-' ]\p{L}+)*)?$")
+            .WithMessage("Niepoprawne imię i nazwisko");
+
         RuleFor(reservation => reservation.TicketType)
             .IsInEnum()
             .WithMessage("Niepoprawny typ biletu");
