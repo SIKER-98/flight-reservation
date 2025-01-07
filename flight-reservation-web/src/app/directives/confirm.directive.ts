@@ -4,8 +4,7 @@ import {ConfirmDialogComponent} from '../components';
 
 
 @Directive({
-  selector: '[confirm]',
-  standalone: true
+  selector: '[confirm]'
 })
 export class ConfirmDirective {
   @Input() dialogTitle: string = '';

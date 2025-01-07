@@ -1,9 +1,8 @@
 import {Pipe, PipeTransform} from '@angular/core';
 import {TicketType} from '../constants';
-import {tick} from '@angular/core/testing';
 
 
-@Pipe({name: 'ticketType', standalone: true})
+@Pipe({name: 'ticketType'})
 export class TicketTypePipe implements PipeTransform {
   transform(ticketType: TicketType): string {
     switch (ticketType) {

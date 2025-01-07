@@ -29,7 +29,6 @@ import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
   selector: 'app-flight-reservation-list',
   templateUrl: 'flight-reservation-list.component.html',
   styleUrl: 'flight-reservation-list.component.scss',
-  standalone: true,
   imports: [
     MatTable,
     MatColumnDef,

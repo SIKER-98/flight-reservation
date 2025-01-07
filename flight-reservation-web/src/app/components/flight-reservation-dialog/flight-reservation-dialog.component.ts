@@ -26,7 +26,6 @@ import {MatTooltip} from '@angular/material/tooltip';
   selector: 'app-flight-reservation-dialog',
   templateUrl: 'flight-reservation-dialog.component.html',
   styleUrl: 'flight-reservation-dialog.component.scss',
-  standalone: true,
   imports: [
     MatFormFieldModule,
     MatDatepickerModule,
