@@ -1,4 +1,4 @@
-import {Component, Inject, OnDestroy} from '@angular/core';
+import {Component, inject, OnDestroy} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from '@angular/material/dialog';
 import {FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators} from '@angular/forms';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -50,6 +50,7 @@ export class FlightReservationDialogComponent implements OnDestroy {
   protected readonly TicketType = TicketType;
 
   form: FormGroup;
+  data: FlightReservationModel = inject(MAT_DIALOG_DATA);
 
   formError: InputErrorModel[] = [
     {
@@ -78,18 +79,17 @@ export class FlightReservationDialogComponent implements OnDestroy {
     }
   ]
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: FlightReservationModel,
-              private dialogRef: MatDialogRef<FlightReservationDialogComponent>,
+  constructor(private dialogRef: MatDialogRef<FlightReservationDialogComponent>,
               private flightReservationService: FlightReservationService,
               private fb: FormBuilder) {
     this.form = fb.group({
-      fullName: [data?.fullName || '', [Validators.required, noLeadingTrailingSpacesValidator(), nameSurnameValidator()]],
-      flightNumber: [data?.flightNumber || '', [Validators.required, flightNumberValidator(), noLeadingTrailingSpacesValidator()]],
-      departureDate: [data?.departureDate ? new Date(data.departureDate).toISOString().split('T')[0] : '', [Validators.required]],
-      departureTime: [data?.departureDate ? new Date(data.departureDate).toISOString().split('T')[1].slice(0, 5) : '', [Validators.required]],
-      arrivalDate: [data?.arrivalDate ? new Date(data.arrivalDate).toISOString().split('T')[0] : '', [Validators.required]],
-      arrivalTime: [data?.arrivalDate ? new Date(data.arrivalDate).toISOString().split('T')[1].slice(0, 5) : '', [Validators.required]],
-      ticketType: [data?.ticketType || 1, [Validators.required]],
+      fullName: [this.data?.fullName || '', [Validators.required, noLeadingTrailingSpacesValidator(), nameSurnameValidator()]],
+      flightNumber: [this.data?.flightNumber || '', [Validators.required, flightNumberValidator(), noLeadingTrailingSpacesValidator()]],
+      departureDate: [this.data?.departureDate ? new Date(this.data.departureDate).toISOString().split('T')[0] : '', [Validators.required]],
+      departureTime: [this.data?.departureDate ? new Date(this.data.departureDate).toISOString().split('T')[1].slice(0, 5) : '', [Validators.required]],
+      arrivalDate: [this.data?.arrivalDate ? new Date(this.data.arrivalDate).toISOString().split('T')[0] : '', [Validators.required]],
+      arrivalTime: [this.data?.arrivalDate ? new Date(this.data.arrivalDate).toISOString().split('T')[1].slice(0, 5) : '', [Validators.required]],
+      ticketType: [this.data?.ticketType || 1, [Validators.required]],
     })
   }
 
