@@ -1,4 +1,4 @@
-import {Directive, EventEmitter, HostListener, Input, Output} from '@angular/core';
+import {Directive, HostListener, input, output} from '@angular/core';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {ConfirmDialogComponent} from '../components';
 
@@ -7,10 +7,10 @@ import {ConfirmDialogComponent} from '../components';
   selector: '[confirm]'
 })
 export class ConfirmDirective {
-  @Input() dialogTitle: string = '';
-  @Input() message: string = '';
-  @Input() isWarn: boolean = false;
-  @Output() confirmed = new EventEmitter();
+  dialogTitle = input<string>('');
+  message = input<string>('');
+  isWarn = input<boolean>(false);
+  confirmed = output();
 
   constructor(private dialog: MatDialog) {
   }

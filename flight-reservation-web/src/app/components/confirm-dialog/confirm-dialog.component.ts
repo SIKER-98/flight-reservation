@@ -1,4 +1,4 @@
-import {Component, HostListener, Input} from '@angular/core';
+import {Component, input} from '@angular/core';
 import {
   MatDialogActions,
   MatDialogClose,
@@ -21,9 +21,9 @@ import {MatButton} from '@angular/material/button';
   styleUrls: ['./confirm-dialog.component.scss']
 })
 export class ConfirmDialogComponent {
-  @Input({required: true}) dialogTitle: string = "";
-  @Input({required: true}) message: string = "";
-  @Input() isWarn: boolean = false;
+  dialogTitle = input.required<string>();
+  message = input.required<string>();
+  isWarn = input<boolean>(false);
 
   constructor(protected dialogRef: MatDialogRef<ConfirmDialogComponent>) {
     dialogRef.disableClose = true;
