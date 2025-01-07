@@ -17,7 +17,7 @@ import {MatNativeDateModule, MatOption} from '@angular/material/core';
 import {MatSelect} from '@angular/material/select';
 import {TicketType} from '../../constants';
 import {Subscription} from 'rxjs';
-import {flightNumberValidator, noLeadingTrailingSpacesValidator} from '../../validators';
+import {flightNumberValidator, nameSurnameValidator, noLeadingTrailingSpacesValidator} from '../../validators';
 import {MatIcon} from '@angular/material/icon';
 import {MatTooltip} from '@angular/material/tooltip';
 
@@ -71,6 +71,10 @@ export class FlightReservationDialogComponent implements OnDestroy {
     {
       name: 'invalidFlightNumber',
       message: 'Niepoprawny numer lotu'
+    },
+    {
+      name: 'invalidCharacters',
+      message: 'Pole zawiera niepoprawne znaki'
     }
   ]
 
@@ -79,7 +83,7 @@ export class FlightReservationDialogComponent implements OnDestroy {
               private flightReservationService: FlightReservationService,
               private fb: FormBuilder) {
     this.form = fb.group({
-      fullName: [data?.fullName || '', [Validators.required, noLeadingTrailingSpacesValidator()]],
+      fullName: [data?.fullName || '', [Validators.required, noLeadingTrailingSpacesValidator(), nameSurnameValidator()]],
       flightNumber: [data?.flightNumber || '', [Validators.required, flightNumberValidator(), noLeadingTrailingSpacesValidator()]],
       departureDate: [data?.departureDate ? new Date(data.departureDate).toISOString().split('T')[0] : '', [Validators.required]],
       departureTime: [data?.departureDate ? new Date(data.departureDate).toISOString().split('T')[1].slice(0, 5) : '', [Validators.required]],
