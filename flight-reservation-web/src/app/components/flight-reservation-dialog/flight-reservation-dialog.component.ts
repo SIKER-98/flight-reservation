@@ -18,6 +18,8 @@ import {MatSelect} from '@angular/material/select';
 import {TicketType} from '../../constants';
 import {Subscription} from 'rxjs';
 import {flightNumberValidator, noLeadingTrailingSpacesValidator} from '../../validators';
+import {MatIcon} from '@angular/material/icon';
+import {MatTooltip} from '@angular/material/tooltip';
 
 
 @Component({
@@ -36,6 +38,8 @@ import {flightNumberValidator, noLeadingTrailingSpacesValidator} from '../../val
     NgIf,
     MatSelect,
     MatOption,
+    MatIcon,
+    MatTooltip,
   ],
   providers: [
     MatDatepickerModule,
