@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {Subscription} from 'rxjs';
+import {Subject, takeUntil} from 'rxjs';
 import {FlightReservationService} from '../../services';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort, MatSortHeader} from '@angular/material/sort';
@@ -60,7 +60,7 @@ import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
   ]
 })
 export class FlightReservationListComponent implements OnInit, OnDestroy {
-  private subscription = new Subscription();
+  private unsubscribe$ = new Subject<void>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -84,33 +84,34 @@ export class FlightReservationListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   private fetchFlightReservations(): void {
-    this.subscription.add(
-      this.flightReservationService.getFlightReservations().subscribe(data => {
+    this.flightReservationService.getFlightReservations()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(data => {
         this.dataSource.data = data;
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
-      })
-    );
+      });
   }
 
   deleteItem(id: string): void {
-    this.subscription.add(
-      this.flightReservationService.deleteFlightReservation(id).subscribe(() =>
+    this.flightReservationService.deleteFlightReservation(id)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(() =>
         this.fetchFlightReservations()
-      )
-    );
+      );
   }
 
   deleteAllItems(): void {
-    this.subscription.add(
-      this.flightReservationService.clearFlightReservations().subscribe(() =>
+    this.flightReservationService.clearFlightReservations()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(() =>
         this.fetchFlightReservations()
-      )
-    );
+      );
   }
 
   openDialog(element: FlightReservationModel | null = null): void {
@@ -125,7 +126,14 @@ export class FlightReservationListComponent implements OnInit, OnDestroy {
   }
 
   applyFilter($event: Event): void {
-    const filterValue = ($event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    const filterValue = ($event.target as HTMLInputElement).value.toLowerCase();
+
+    if (this.dataSource.filter !== filterValue) {
+      this.dataSource.filter = filterValue.trim().toLowerCase();
+    }
+
+    this.flightReservationService.getFlightReservations()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(data => this.dataSource.data = data)
   }
 }
