@@ -20,6 +20,7 @@ import {Subscription} from 'rxjs';
 import {flightNumberValidator, nameSurnameValidator, noLeadingTrailingSpacesValidator} from '../../validators';
 import {MatIcon} from '@angular/material/icon';
 import {MatTooltip} from '@angular/material/tooltip';
+import {MatTimepicker, MatTimepickerInput, MatTimepickerToggle} from '@angular/material/timepicker';
 
 
 @Component({
@@ -39,6 +40,9 @@ import {MatTooltip} from '@angular/material/tooltip';
     MatOption,
     MatIcon,
     MatTooltip,
+    MatTimepickerToggle,
+    MatTimepicker,
+    MatTimepickerInput,
   ],
   providers: [
     MatDatepickerModule,
@@ -91,6 +95,9 @@ export class FlightReservationDialogComponent implements OnDestroy {
       arrivalTime: [this.data?.arrivalDate ? new Date(this.data.arrivalDate).toISOString().split('T')[1].slice(0, 5) : '', [Validators.required]],
       ticketType: [this.data?.ticketType || 1, [Validators.required]],
     })
+
+    this.form.get("departureDate")?.disable();
+    this.form.get("arrivalDate")?.disable();
   }
 
   ngOnDestroy(): void {

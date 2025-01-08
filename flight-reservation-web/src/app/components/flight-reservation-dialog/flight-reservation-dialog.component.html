@@ -22,7 +22,10 @@
 
     <mat-form-field class="full-width">
       <mat-label>Data wylotu</mat-label>
-      <input matInput type="date" formControlName="departureDate">
+      <input matInput formControlName="departureDate" [matDatepicker]="departureDatePicker">
+      <mat-hint>MM/DD/YYYY</mat-hint>
+      <mat-datepicker-toggle matIconSuffix [for]="departureDatePicker"></mat-datepicker-toggle>
+      <mat-datepicker #departureDatePicker disabled="false"></mat-datepicker>
       <mat-error *ngIf="form.get('departureDate')?.errors">
         {{ getErrorMessage(form.get('departureDate')?.errors) }}
       </mat-error>
@@ -30,7 +33,9 @@
 
     <mat-form-field class="full-width">
       <mat-label>Godzina wylotu</mat-label>
-      <input matInput type="time" formControlName="departureTime">
+      <input matInput formControlName="departureTime" [matTimepicker]="departureTimePicker">
+      <mat-timepicker-toggle matIconSuffix [for]="departureTimePicker"></mat-timepicker-toggle>
+      <mat-timepicker #departureTimePicker disabled="false"></mat-timepicker>
       <mat-error *ngIf="form.get('departureTime')?.errors">
         {{ getErrorMessage(form.get('departureTime')?.errors) }}
       </mat-error>
@@ -38,7 +43,10 @@
 
     <mat-form-field class="full-width">
       <mat-label>Data przylotu</mat-label>
-      <input matInput type="date" formControlName="arrivalDate">
+      <input matInput formControlName="arrivalDate" [matDatepicker]="arrivalDatePicker">
+      <mat-hint>MM/DD/YYYY</mat-hint>
+      <mat-datepicker-toggle matIconSuffix [for]="arrivalDatePicker"></mat-datepicker-toggle>
+      <mat-datepicker #arrivalDatePicker disabled="false"></mat-datepicker>
       <mat-error *ngIf="form.get('arrivalDate')?.errors">
         {{ getErrorMessage(form.get('arrivalDate')?.errors) }}
       </mat-error>
@@ -46,12 +54,13 @@
 
     <mat-form-field class="full-width">
       <mat-label>Godzina przylotu</mat-label>
-      <input matInput type="time" formControlName="arrivalTime">
+      <input matInput formControlName="arrivalTime" [matTimepicker]="arrivalTimePicker">
+      <mat-timepicker-toggle matIconSuffix [for]="arrivalTimePicker"></mat-timepicker-toggle>
+      <mat-timepicker #arrivalTimePicker disabled="false"></mat-timepicker>
       <mat-error *ngIf="form.get('arrivalTime')?.errors">
         {{ getErrorMessage(form.get('arrivalTime')?.errors) }}
       </mat-error>
     </mat-form-field>
-
 
     <mat-form-field class="full-width">
       <mat-label>Ticket Type</mat-label>
