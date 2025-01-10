@@ -1,6 +1,5 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Subject, takeUntil} from 'rxjs';
-import {FlightReservationService} from '../../services';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort, MatSortHeader} from '@angular/material/sort';
 import {
@@ -13,7 +12,6 @@ import {
   MatTable,
   MatTableDataSource
 } from '@angular/material/table';
-import {FlightReservationModel} from '../../models';
 import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
 import {FlightReservationDialogComponent} from '../flight-reservation-dialog/flight-reservation-dialog.component';
@@ -22,8 +20,10 @@ import {DatePipe, UpperCasePipe} from '@angular/common';
 import {MatFormField} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {ConfirmDirective} from '../../directives/confirm.directive';
-import {TicketTypePipe} from '../../pipes';
 import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
+import {TicketTypePipe} from '../../pipes/ticket-type.pipe';
+import {FlightReservationModel} from '../../models/flight-reservation.model';
+import {FlightReservationService} from '../../services/flight-reservation.service';
 
 
 @Component({

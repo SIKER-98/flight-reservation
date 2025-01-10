@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {FlightReservationListComponent} from './components';
+import {FlightReservationListComponent} from './components/flight-reservation-list/flight-reservation-list.component';
 
 @Component({
   selector: 'app-root',

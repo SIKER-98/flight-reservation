@@ -1,6 +1,6 @@
 import {Directive, HostListener, input, output} from '@angular/core';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
-import {ConfirmDialogComponent} from '../components';
+import {ConfirmDialogComponent} from '../components/confirm-dialog/confirm-dialog.component';
 
 
 @Directive({

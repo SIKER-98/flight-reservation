@@ -1,5 +1,5 @@
 import {Pipe, PipeTransform} from '@angular/core';
-import {TicketType} from '../constants';
+import {TicketType} from '../constants/ticket-type';
 
 
 @Pipe({name: 'ticketType'})

@@ -1,4 +1,4 @@
-import {TicketType} from '../constants';
+import {TicketType} from '../constants/ticket-type';
 
 
 export interface FlightReservationModel {

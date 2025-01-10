@@ -5,8 +5,8 @@ import {routes} from './app.routes';
 import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
 import {HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 import {MatNativeDateModule} from '@angular/material/core';
-import {HttpErrorInterceptor} from './interceptors';
 import {MAT_SNACK_BAR_DEFAULT_OPTIONS} from '@angular/material/snack-bar';
+import {HttpErrorInterceptor} from './interceptors/http-error.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [

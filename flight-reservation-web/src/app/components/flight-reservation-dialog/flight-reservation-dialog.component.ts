@@ -12,26 +12,22 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {NgIf} from '@angular/common';
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
-import {FlightReservationService} from '../../services';
-import {
-  CreateFlightReservationModel,
-  FlightReservationModel,
-  InputErrorModel,
-  UpdateFlightReservationModel
-} from '../../models';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule, MatOption} from '@angular/material/core';
 import {MatSelect} from '@angular/material/select';
-import {TicketType} from '../../constants';
-import {
-  dateRangeValidator,
-  flightNumberValidator,
-  nameSurnameValidator,
-  noLeadingTrailingSpacesValidator
-} from '../../validators';
 import {MatIcon} from '@angular/material/icon';
 import {MatTooltip} from '@angular/material/tooltip';
 import {MatTimepicker, MatTimepickerInput, MatTimepickerToggle} from '@angular/material/timepicker';
+import { TicketType } from '../../constants/ticket-type';
+import {FlightReservationModel} from '../../models/flight-reservation.model';
+import {InputErrorModel} from '../../models/input-error.model';
+import {FlightReservationService} from '../../services/flight-reservation.service';
+import {noLeadingTrailingSpacesValidator} from '../../validators/no-leading-trailing-spaces.validator';
+import { nameSurnameValidator } from '../../validators/name-surname.validator';
+import {flightNumberValidator} from '../../validators/flight-number.validator';
+import {dateRangeValidator} from '../../validators/date-range.validator';
+import {UpdateFlightReservationModel} from '../../models/update-flight-reservation.model';
+import {CreateFlightReservationModel} from '../../models/create-flight-reservation.model';
 
 
 @Component({

@@ -1,7 +1,9 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {CreateFlightReservationModel, FlightReservationModel, UpdateFlightReservationModel} from '../models';
 import {Observable} from 'rxjs';
+import {FlightReservationModel} from '../models/flight-reservation.model';
+import {CreateFlightReservationModel} from '../models/create-flight-reservation.model';
+import {UpdateFlightReservationModel} from '../models/update-flight-reservation.model';
 
 
 @Injectable({
