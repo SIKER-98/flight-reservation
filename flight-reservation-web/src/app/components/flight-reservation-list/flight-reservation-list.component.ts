@@ -77,10 +77,12 @@ export class FlightReservationListComponent implements OnInit, OnDestroy {
 
     this.dataSource.sortingDataAccessor = (data: any, sortHeaderId: string) => {
       console.log(data, sortHeaderId)
-      switch (sortHeaderId){
+      switch (sortHeaderId) {
         case 'departureDate':
         case 'arrivalDate':
           return new Date(data[sortHeaderId]).getTime();
+        case 'ticketType':
+          return data[sortHeaderId];
         default:
           return data[sortHeaderId].toLocaleUpperCase();
       }

@@ -13,7 +13,7 @@ import {NgIf} from '@angular/common';
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
 import {MatDatepickerModule} from '@angular/material/datepicker';
-import {MatNativeDateModule, MatOption} from '@angular/material/core';
+import {DateAdapter, MatNativeDateModule, MatOption} from '@angular/material/core';
 import {MatSelect} from '@angular/material/select';
 import {MatIcon} from '@angular/material/icon';
 import {MatTooltip} from '@angular/material/tooltip';
@@ -57,6 +57,7 @@ import {CreateFlightReservationModel} from '../../models/create-flight-reservati
   ],
 })
 export class FlightReservationDialogComponent {
+  private readonly _dateAdapter = inject(DateAdapter<unknown, unknown>);
   protected readonly TicketType = TicketType;
 
   form!: FormGroup;
@@ -103,6 +104,7 @@ export class FlightReservationDialogComponent {
               private flightReservationService: FlightReservationService,
               private fb: FormBuilder) {
     this.maxDate.setFullYear(this.maxDate.getFullYear() + 10);
+    this._dateAdapter.setLocale('pl-PL');
 
     this.form = this.fb.group({
       fullName: [this.data?.fullName || '', [Validators.required, noLeadingTrailingSpacesValidator(), nameSurnameValidator()]],
