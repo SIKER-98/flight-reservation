@@ -75,11 +75,15 @@ export class FlightReservationListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.fetchFlightReservations()
 
-    this.dataSource.sortingDataAccessor = (data: any, sortHeaderId: string): string => {
-      if (typeof data[sortHeaderId] === 'string') {
-        return data[sortHeaderId].toLocaleUpperCase();
+    this.dataSource.sortingDataAccessor = (data: any, sortHeaderId: string) => {
+      console.log(data, sortHeaderId)
+      switch (sortHeaderId){
+        case 'departureDate':
+        case 'arrivalDate':
+          return new Date(data[sortHeaderId]).getTime();
+        default:
+          return data[sortHeaderId].toLocaleUpperCase();
       }
-      return data[sortHeaderId];
     }
   }
 

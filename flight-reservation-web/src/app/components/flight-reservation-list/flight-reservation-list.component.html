@@ -25,12 +25,12 @@
 
     <ng-container matColumnDef="departureDate">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Wylot</th>
-      <td mat-cell *matCellDef="let element">{{ element.departureDate | date : "dd-MM-YYYY hh:mm" }}</td>
+      <td mat-cell *matCellDef="let element">{{ element.departureDate | date : "dd-MM-YYYY H:mm" }}</td>
     </ng-container>
 
     <ng-container matColumnDef="arrivalDate">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Przylot</th>
-      <td mat-cell *matCellDef="let element">{{ element.arrivalDate | date : "dd-MM-YYYY hh:mm" }}</td>
+      <td mat-cell *matCellDef="let element">{{ element.arrivalDate | date : "dd-MM-YYYY H:mm" }}</td>
     </ng-container>
 
     <ng-container matColumnDef="ticketType">
