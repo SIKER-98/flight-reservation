@@ -1,14 +1,14 @@
-<h1 mat-dialog-title>{{ data ? 'Edit Flight Reservation' : 'Add Flight Reservation' }}</h1>
+<h1 mat-dialog-title>{{ data ? 'Edycja rezerwacji lotu' : 'Dodawanie rezerwacji lotu' }}</h1>
 <div mat-dialog-content>
   <form [formGroup]="form" class="dialog-container">
     <mat-form-field class="full-width">
-      <mat-label>Full Name</mat-label>
+      <mat-label>Imię i nazwisko</mat-label>
       <input matInput class="full-width" formControlName="fullName">
       <mat-error *ngIf="form.get('fullName')?.errors">{{ getErrorMessage(form.get('fullName')?.errors) }}</mat-error>
     </mat-form-field>
 
     <mat-form-field class="full-width">
-      <mat-label>Flight Number</mat-label>
+      <mat-label>Numer lotu</mat-label>
       <input matInput formControlName="flightNumber">
       <mat-icon matSuffix
                 matTooltipPosition="left"
@@ -22,7 +22,12 @@
 
     <mat-form-field class="full-width">
       <mat-label>Data wylotu</mat-label>
-      <input matInput formControlName="departureDate" [matDatepicker]="departureDatePicker">
+      <input matInput
+             formControlName="departureDate"
+             [min]="minDate"
+             [max]="arrivalDateControl?.value || maxDate"
+             (dateChange)="updateDepartureDate($event.value)"
+             [matDatepicker]="departureDatePicker">
       <mat-hint>MM/DD/YYYY</mat-hint>
       <mat-datepicker-toggle matIconSuffix [for]="departureDatePicker"></mat-datepicker-toggle>
       <mat-datepicker #departureDatePicker disabled="false"></mat-datepicker>
@@ -43,7 +48,12 @@
 
     <mat-form-field class="full-width">
       <mat-label>Data przylotu</mat-label>
-      <input matInput formControlName="arrivalDate" [matDatepicker]="arrivalDatePicker">
+      <input matInput
+             formControlName="arrivalDate"
+             [min]="departureDateControl?.value || minDate"
+             [max]="maxDate"
+             (dateChange)="updateArrivalDate($event.value)"
+             [matDatepicker]="arrivalDatePicker">
       <mat-hint>MM/DD/YYYY</mat-hint>
       <mat-datepicker-toggle matIconSuffix [for]="arrivalDatePicker"></mat-datepicker-toggle>
       <mat-datepicker #arrivalDatePicker disabled="false"></mat-datepicker>
@@ -63,7 +73,7 @@
     </mat-form-field>
 
     <mat-form-field class="full-width">
-      <mat-label>Ticket Type</mat-label>
+      <mat-label>Typ biletu</mat-label>
       <mat-select formControlName="ticketType">
         <mat-option [value]="TicketType.Economic">Ekonomiczna</mat-option>
         <mat-option [value]="TicketType.Business">Biznesowa</mat-option>
@@ -71,7 +81,10 @@
       <mat-error *ngIf="form.get('ticketType')?.errors">{{ getErrorMessage(form.get('ticketType')?.errors) }}
       </mat-error>
     </mat-form-field>
+
+    <mat-error>{{getErrorMessage(dateTimeOrderValidator(form))}}</mat-error>
   </form>
+
 
   <button mat-button (click)="close()">Anuluj</button>
   <button mat-flat-button color="primary" [disabled]="!form.valid" (click)="save()">{{ data ? 'Edytuj' : 'Dodaj' }}

@@ -25,5 +25,21 @@ public class UpdateFlightReservationDtoValidator : AbstractValidator<UpdateFligh
         RuleFor(reservation => reservation.DepartureDate)
             .LessThan(reservation => reservation.ArrivalDate)
             .WithMessage("Data przylotu nie może być wcześniej niż data wylotu");
+
+        RuleFor(reservation => reservation.DepartureDate)
+            .NotEmpty().WithMessage("Data wylotu jest wymagana")
+            .Must(BeWithinValidRange).WithMessage("Data wylotu spoza zakresu");
+
+        RuleFor(reservation => reservation.ArrivalDate)
+            .NotEmpty().WithMessage("Data przylotu jest wymagana")
+            .Must(BeWithinValidRange).WithMessage("Data przylotu spoza zakresu");
+    }
+
+    private bool BeWithinValidRange(DateTime date)
+    {
+        var year2000 = new DateTime(2000, 1, 1);
+        var tenYearsFromNow = DateTime.Now.AddYears(10);
+
+        return date >= year2000 && date <= tenYearsFromNow;
     }
 }

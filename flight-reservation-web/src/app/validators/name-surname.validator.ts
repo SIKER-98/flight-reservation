@@ -15,6 +15,6 @@ export function nameSurnameValidator(): ValidatorFn {
       return null;
     }
 
-    return {invalidCharacters: true};
+    return {invalidFullName: true};
   };
 }
